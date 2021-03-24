@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.krain.crm.workbench.dao.ClueDao">
+
+    <insert id="insertClue">
+        insert into tbl_clue (
+        id,
+        fullname,
+        appellation,
+        owner,
+        company,
+        job,
+        email,
+        phone,
+        website,
+        mphone,
+        status,
+        source,
+        createBy,
+        createTime,
+        description,
+        contactSummary,
+        nextContactTime,
+        address
+        ) values (
+        #{id},
+        #{fullname},
+        #{appellation},
+        #{owner},
+        #{company},
+        #{job},
+        #{email},
+        #{phone},
+        #{website},
+        #{mphone},
+        #{status},
+        #{source},
+        #{createBy},
+        #{createTime},
+        #{description},
+        #{contactSummary},
+        #{nextContactTime},
+        #{address}
+        )
+    </insert>
+
+    <select id="selectClueList" resultType="Clue">
+        select
+        c.id,
+        c.fullname,
+        c.appellation,
+        u.name as owner,
+        c.company,
+        c.job,
+        c.email,
+        c.phone,
+        c.website,
+        c.mphone,
+        c.status,
+        c.source,
+        c.createBy,
+        c.createTime,
+        c.description,
+        c.contactSummary,
+        c.nextContactTime,
+        c.address from tbl_clue c join tbl_user u on c.owner=u.id
+        order by createTime
+    </select>
+
+    <select id="selectOneClue" resultType="Clue">
+        select
+        c.id,
+        c.fullname,
+        c.appellation,
+        u.name as owner,
+        c.company,
+        c.job,
+        c.email,
+        c.phone,
+        c.website,
+        c.mphone,
+        c.status,
+        c.source,
+        c.createBy,
+        c.createTime,
+        c.description,
+        c.contactSummary,
+        c.nextContactTime,
+        c.address from tbl_clue c join tbl_user u on c.owner=u.id where c.id=#{id}
+    </select>
+
+    <delete id="deleteClueActivity">
+        delete from tbl_clue_activity_relation where id=#{id}
+    </delete>
+
+    <insert id="insertClueActivityRelation">
+        insert into tbl_clue_activity_relation (id, clueId, activityId) values
+        (#{id}, #{clueId},#{activityId})
+    </insert>
+
+    <delete id="deleteClue">
+        delete from tbl_clue where id=#{id}
+    </delete>
+
+</mapper>

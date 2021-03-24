@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.krain.crm.workbench.dao.ActivityDao">
+
+    <!--创建市场活动-->
+    <insert id="insertActivity">
+        insert into tbl_activity
+        (
+        id,
+        owner,
+        name,
+        startDate,
+        endDate,
+        cost,
+        description,
+        createTime,
+        createBy
+        )
+        values
+        (
+        #{id},
+        #{owner},
+        #{name},
+        #{startDate},
+        #{endDate},
+        #{cost},
+        #{description},
+        #{createTime},
+        #{createBy}
+        )
+    </insert>
+
+    <!--获取指定条件下所有活动-->
+    <select id="selectActivity" resultType="Activity">
+        select a.id, a.name, u.name as owner, a.startDate, a.endDate
+        from tbl_activity a join tbl_user u on a.owner=u.id
+        <where>
+
+            <if test="activity.name!=null and activity.name!='' ">
+                a.name like CONCAT('%',#{activity.name},'%')
+            </if>
+
+            <if test="activity.owner!=null and activity.owner!='' ">
+                and u.name like CONCAT('%',#{activity.owner},'%')
+            </if>
+
+            <if test="activity.startDate!=null and activity.startDate!='' ">
+                and a.startDate &gt; #{activity.startDate}
+            </if>
+
+            <if test="activity.endDate!=null and activity.endDate!='' ">
+                and a.endDate &lt; #{activity.endDate}
+            </if>
+        </where>
+        order by a.createTime desc
+        limit #{skipCount},#{pSize}
+    </select>
+
+    <!--获取指定条件下所有活动总数-->
+    <select id="selectActivityTotal" resultType="int">
+        select count(*)
+        from tbl_activity a join tbl_user u on a.owner=u.id
+        <where>
+
+            <if test="activity.name!=null and activity.name!='' ">
+                a.name like CONCAT('%',#{activity.name},'%')
+            </if>
+
+            <if test="activity.owner!=null and activity.owner!='' ">
+                and u.name like CONCAT('%',#{activity.owner},'%')
+            </if>
+
+            <if test="activity.startDate!=null and activity.startDate!='' ">
+                and a.startDate &gt; #{activity.startDate}
+            </if>
+
+            <if test="activity.endDate!=null and activity.endDate!='' ">
+                and a.endDate &lt; #{activity.endDate}
+            </if>
+        </where>
+    </select>
+
+    <!--删除指定id的市场活动-->
+    <delete id="deleteActivity">
+        delete from tbl_activity where id in
+        <foreach collection="array" open="(" close=")" item="delId" separator=",">
+            #{delId}
+        </foreach>
+    </delete>
+
+    <!--查询指定id的Activity信息-->
+    <select id="selectOneActivity" resultType="Activity">
+        select * from tbl_activity where id = #{id}
+    </select>
+
+    <!--修改市场活动-->
+    <update id="updateActivity">
+        update tbl_activity set owner=#{owner}, name=#{name}, startDate=#{startDate},
+        endDate=#{endDate}, cost=#{cost}, description=#{description} where id=#{id}
+    </update>
+
+    <!--获取市场活动的详细信息（owner需要转换为user表中的name）-->
+    <select id="selectDetailActivity" resultType="Activity">
+        select
+        a.id,
+        u.name as owner,
+        a.name,
+        a.startDate,
+        a.endDate,
+        a.cost,
+        a.description,
+        a.createTime,
+        a.createBy,
+        a.editTime,
+        a.editBy
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+        where a.id=#{id}
+    </select>
+
+    <select id="selectClueActivity" resultType="Activity">
+        select
+        car.id as id,
+        u.name as owner,
+        a.name,
+        a.startDate,
+        a.endDate
+        from tbl_activity a
+        join tbl_user u on u.id=a.owner
+        join tbl_clue_activity_relation car on car.activityId=a.id
+        where car.clueId=#{clueId}
+    </select>
+
+    <select id="selectActivityByName" resultType="Activity">
+        select
+        a.id,
+        u.name as owner,
+        a.name,
+        a.startDate,
+        a.endDate
+        from tbl_activity a join tbl_user u on a.owner=u.id where a.name like '%' #{name} '%'
+        and a.id not in (
+        select activityId from tbl_clue_activity_relation where clueId=#{clueId}
+        )
+    </select>
+
+    <select id="selectAllActivityByName" resultType="Activity">
+        select
+        a.id,
+        u.name as owner,
+        a.name,
+        a.startDate,
+        a.endDate,
+        a.cost,
+        a.description,
+        a.createTime,
+        a.createBy,
+        a.editTime,
+        a.editBy
+        from tbl_activity a join tbl_user u on a.owner=u.id where a.name like '%' #{name} '%'
+    </select>
+
+    <select id="selectOneActivityByName" resultType="Activity">
+        select * from tbl_activity where name=#{name}
+    </select>
+</mapper>

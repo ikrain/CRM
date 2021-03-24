@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--SpringMVC配置文件，用于声明controller和其他web对象-->
+
+    <!--组件扫描器-->
+    <context:component-scan base-package="cn.krain.crm" annotation-config="true"/>
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/workbench/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--注解驱动
+            作用：1、相应ajax请求，返回json
+                 2、解决静态资源访问问题-->
+    <mvc:annotation-driven/>
+
+    <!--声明拦截器，拦截未登录的用户-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.krain.crm.settings.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--处理静态资源访问的方式-->
+    <!--    <mvc:default-servlet-handler />-->
+
+</beans>

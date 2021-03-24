@@ -1,0 +1,100 @@
+.row {
+    background-color: #3C3C3C;
+    height: 30px;
+    color: white;
+    font-size: 25px;
+    line-height: 60px;
+    padding-left: 10px;
+}
+
+.row span {
+    font-size: 14px;
+    padding-left: 10px;
+    color: white;
+}
+
+.row .col-md-8 {
+    height: auto;
+}
+
+.row .col-md-8 img {
+    width: 100%;
+    height: 100%;
+    /* 设置图片不可被选中 */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.row .col-md-4 {
+    margin-top: 100px;
+    height: auto;
+}
+
+/* 文本框 */
+.form-control {
+    width: 350px;
+    height: 45px;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+/* 登录按钮 */
+.btn-primary {
+    width: 350px;
+    height: 45px;
+    font-size: 18px;
+    position: relative;
+    top: 45px;
+}
+
+/* 工作台 */
+ul {
+    list-style-type: none;
+}
+
+.top-menu li {
+    float: left;
+}
+
+.top {
+    background-color: #3C3C3C;
+    height: 50px;
+    color: white;
+    font-size: 25px;
+    line-height: 50px;
+    padding-left: 15px;
+}
+
+.dropdown {
+    position: absolute;
+    right: 50px;
+    top: 0px;
+}
+
+.btn {
+    font-size: 20px;
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.btn:hover {
+    color: aliceblue;
+}
+
+.user-list {
+    font-size: 15px;
+    line-height: 35px;
+}
+
+.user-list a {
+    text-decoration: none;
+    color: black;
+}
+
+.wenrch-list a:hover {
+    background-color: #eee;
+}
+
